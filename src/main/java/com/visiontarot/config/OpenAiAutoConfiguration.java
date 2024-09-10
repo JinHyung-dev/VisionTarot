@@ -1,4 +1,4 @@
-package com.visiontarot.controller;
+package com.visiontarot.config;
 
 import org.springframework.ai.openai.api.OpenAiApi;
 import org.springframework.beans.factory.annotation.Value; // 필요할 경우 import
