@@ -10,6 +10,6 @@ public class CardController {
     @GetMapping("hello")
     public String index(Model model){
         model.addAttribute("data", "guest");
-        return "hello";
+        return "index";
     }
 }
