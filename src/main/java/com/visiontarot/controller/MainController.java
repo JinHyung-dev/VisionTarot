@@ -14,7 +14,7 @@ public class MainController {
     }
     @GetMapping("/card/onecard")
     public String onecard(Model model){
-        return "onecard";
+        return "card";
     }
     @GetMapping("/card/threecard")
     public String threecard(Model model) {
