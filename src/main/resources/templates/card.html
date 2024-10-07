@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>타로카드 뽑기</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+
+<section class="your-concern" id="concernSection">
+    <h3>현재 가장 고민이 되는 점을 적어주세요.</h3>
+    <p>구체적일 수록 좋습니다..</p>
+    <form id="userForm">
+        <label for="userConcern">
+            <textarea id="userConcern" rows="4" cols="50" required placeholder="고민을 입력하세요"></textarea>
+        </label>
+        <br>
+        <button type="button" id="submitBtn">카드 뽑기</button>
+    </form>
+</section>
+
+<section class="card-shuffling" id="shuffleSection" style="display: none">
+    <div id="shufflingMessage">
+        <h3>카드를 섞고 있습니다...</h3>
+    </div>
+<!--    <div>카드 섞는 애니메이션</div>-->
+</section>
+
+<section class="card-selection" id="selectSection" style="display: none">
+    <h3>찬찬히 둘러보되, 가장 마음에 들어오는 카드를 선택하세요</h3>
+    <!-- 메인화면에서 카드개수 선택시 파라미터로 값 전달, 해당값만큼 선택하는지 체크하는 스크립트 추가 예정 -->
+    <div class="cards">
+        <div class="card" th:each="card : ${tarotCards}" th:text="${card.name}">타로카드</div>
+    </div>
+</section>
+
+<section class="card-result" style="display: none">
+    <h3>당신이 선택한 카드는...</h3>
+    <div id="result"></div>
+</section>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<script th:src="@{/js/cardScript.js}"></script>
+</body>
+</html>

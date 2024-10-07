@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VisionTarot</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+
+<section class="hero">
+    <h2>오늘의 운명을 타로카드로 확인해보세요!</h2>
+    <p>간단한 카드 뽑기로 당신의 미래를 알아보세요.</p>
+</section>
+
+<section class="index_btn">
+    <a th:href="@{/card/onecard}">
+        <button>1카드 뽑기</button>
+    </a>
+    <a th:href="@{/card/threecard}">
+        <button>3카드 뽑기</button>
+    </a>
+</section>
+
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

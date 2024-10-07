@@ -1,0 +1,93 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    text-align: center;
+}
+
+header {
+    background-color: #afa0c5;
+    padding: 20px;
+    color: white;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 10px;
+}
+
+footer {
+    background-color: #afa0c5;
+    color: white;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.hero {
+    padding: 100px 20px;
+    flex-grow: 1; /* 남은 공간을 차지하게 만듦 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    background-image: url('/images/main.webp');
+    background-size: cover;  /* 배경 이미지가 화면에 맞게 꽉 차도록 설정 */
+    background-position: center;  /* 이미지가 가운데에 위치 */
+    background-repeat: no-repeat; /* 이미지 반복 안 함 */
+}
+.index_btn{
+    flex-grow: 1; /* 남은 공간을 차지하게 만듦 */
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+.cards {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.card {
+    width: 150px;
+    height: 200px;
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.select-btn {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.select-btn:hover {
+    background-color: #0056b3;
+}
+
+.result {
+    margin-top: 30px;
+}
+
