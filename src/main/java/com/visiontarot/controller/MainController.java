@@ -12,12 +12,4 @@ public class MainController {
         model.addAttribute("data", "guest");
         return "index";
     }
-    @GetMapping("/card/onecard")
-    public String onecard(Model model){
-        return "card";
-    }
-    @GetMapping("/card/threecard")
-    public String threecard(Model model) {
-        return "threecard";
-    }
 }
