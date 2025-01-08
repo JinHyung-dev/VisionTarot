@@ -36,9 +36,13 @@
     </div>
 </section>
 
-<section class="card-result" style="display: none">
+<section class="card-result" id="resultSection" style="display: none">
     <h3>당신이 선택한 카드는...</h3>
     <div id="result"></div>
+    <div id="describe" class="describeBox">
+        <div id="describe-content"></div>
+        <button id="clipboard" class="clipboard-btn">복사하기</button>
+    </div>
 </section>
 
 <div th:replace="fragments/footer :: footer"></div>
