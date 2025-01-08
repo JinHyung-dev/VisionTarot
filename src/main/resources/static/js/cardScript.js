@@ -43,6 +43,22 @@ document.getElementById("submitBtn").addEventListener("click", function() {
     }, 3000); // 3초 후
 });
 
+document.getElementById("clipboardBtn").addEventListener("click", function () {
+    const textToCopy = document.getElementById("describe-content").innerText;
+
+    // 클립보드에 텍스트 복사
+    navigator.clipboard
+        .writeText(textToCopy)
+        .then(() => {
+            alert("텍스트가 클립보드에 복사되었습니다!");
+        })
+        .catch((err) => {
+            console.error("복사 실패:", err);
+            alert("복사에 실패했습니다!");
+        });
+});
+
+
 function pickCard() {
 
 }
