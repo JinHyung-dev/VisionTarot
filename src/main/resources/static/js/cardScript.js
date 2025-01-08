@@ -15,12 +15,20 @@ document.getElementById("submitBtn").addEventListener("click", function() {
         .then(response => response.json())
         .then(data => {
             console.log(data)
-            const cardResult = document.getElementById('resultSection');
+            const cardResult = document.getElementById('result');
             cardResult.innerHTML = `
                         <p>카드명: ${data.cardName}</p>
                         <p>카드종류: ${data.cardImgName}</p>
-                        <img src="${data.cardImgUrl}" alt="${data.cardName}"/>
+                        <img src="${data.cardImgUrl}" alt="${data.cardName}" width="150px"/>
                     `;
+
+            const reviewContent = document.getElementById('describe-content');
+            if(data.reversed) {
+               reviewContent.innerHTML = `"${concern}"라는 고민에 대한 유니버셜 타로카드의 결과는 ${data.cardName} 역방향입니다.`;
+            } else {
+               reviewContent.innerHTML = `"${concern}"라는 고민에 대한 유니버셜 타로카드의 결과는 ${data.cardName} 정방향입니다.`;
+            }
+            document.getElementById("describe").style.display = 'block';
         })
         .catch(error => {
             console.error('Error:', error);
