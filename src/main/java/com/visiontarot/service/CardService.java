@@ -1,9 +1,11 @@
 package com.visiontarot.service;
 
+import com.visiontarot.config.GeminiApiRequest;
 import com.visiontarot.domain.Card;
 import com.visiontarot.domain.CardDTO;
 import com.visiontarot.repository.CardRepository;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
@@ -15,11 +17,13 @@ import org.springframework.stereotype.Service;
 public class CardService {
     private List<CardDTO> cardDTOS;
     private final CardRepository cardRepository;
+    private final GeminiApiRequest geminiApiRequest;
 
     @Autowired
-    public CardService(CardRepository cardRepository) {
+    public CardService(CardRepository cardRepository, GeminiApiRequest geminiApiRequest) {
         this.cardRepository = cardRepository;
         this.cardDTOS = getAllCards();
+        this.geminiApiRequest = geminiApiRequest;
     }
 
     public CardDTO drawOneCard() {
@@ -38,5 +42,9 @@ public class CardService {
         return cards.stream()
                 .map(Card::toDTO)  // 엔티티 -> DTO로 변환
                 .collect(Collectors.toList());
+    }
+
+    public Map<String, Object> getGeminiResponse(String userConcernAndCardResult) {
+        return geminiApiRequest.makeRequest(userConcernAndCardResult);
     }
 }
