@@ -2,8 +2,7 @@ package com.visiontarot.service;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.visiontarot.card.repository.CardRepository;
-import com.visiontarot.card.service.CardService;
+import com.visiontarot.repository.CardRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

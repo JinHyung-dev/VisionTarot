@@ -1,4 +1,4 @@
-package com.visiontarot.controller;
+package com.visiontarot.api;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

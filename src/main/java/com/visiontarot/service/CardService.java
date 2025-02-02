@@ -1,8 +1,8 @@
-package com.visiontarot.card.service;
+package com.visiontarot.service;
 
-import com.visiontarot.card.model.Card;
-import com.visiontarot.card.model.CardDTO;
-import com.visiontarot.card.repository.CardRepository;
+import com.visiontarot.domain.Card;
+import com.visiontarot.domain.CardDTO;
+import com.visiontarot.repository.CardRepository;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
