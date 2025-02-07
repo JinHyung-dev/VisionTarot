@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class GeminiApiRequestConfiguration {
+    // private static final Logger logger = LoggerFactory.getLogger(ImageWriter.class); // ✅ 로거 설정
+
     @Value("${spring.ai.vertex.ai.gemini.api-endpoint}")
     private String apiEndpoint;
 
@@ -51,7 +53,7 @@ public class GeminiApiRequestConfiguration {
             result.put("Response Body", response.body());
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("API 호출 중 오류 발생" + e.getMessage());
             result.put("Error", "API 호출 중 오류 발생");
         }
 
