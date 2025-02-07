@@ -1,6 +1,6 @@
 package com.visiontarot.service;
 
-import com.visiontarot.config.GeminiApiRequest;
+import com.visiontarot.config.GeminiApiRequestConfiguration;
 import com.visiontarot.domain.Card;
 import com.visiontarot.domain.CardDTO;
 import com.visiontarot.repository.CardRepository;
@@ -17,13 +17,13 @@ import org.springframework.stereotype.Service;
 public class CardService {
     private List<CardDTO> cardDTOS;
     private final CardRepository cardRepository;
-    private final GeminiApiRequest geminiApiRequest;
+    private final GeminiApiRequestConfiguration geminiApiRequestConfiguration;
 
     @Autowired
-    public CardService(CardRepository cardRepository, GeminiApiRequest geminiApiRequest) {
+    public CardService(CardRepository cardRepository, GeminiApiRequestConfiguration geminiApiRequestConfiguration) {
         this.cardRepository = cardRepository;
         this.cardDTOS = getAllCards();
-        this.geminiApiRequest = geminiApiRequest;
+        this.geminiApiRequestConfiguration = geminiApiRequestConfiguration;
     }
 
     public CardDTO drawOneCard() {
@@ -45,6 +45,6 @@ public class CardService {
     }
 
     public Map<String, Object> getGeminiResponse(String userConcernAndCardResult) {
-        return geminiApiRequest.makeRequest(userConcernAndCardResult);
+        return geminiApiRequestConfiguration.makeRequest(userConcernAndCardResult);
     }
 }

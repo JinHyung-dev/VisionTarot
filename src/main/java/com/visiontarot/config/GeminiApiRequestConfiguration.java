@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class GeminiApiRequest {
+public class GeminiApiRequestConfiguration {
     @Value("${spring.ai.vertex.ai.gemini.api-endpoint}")
     private String apiEndpoint;
 

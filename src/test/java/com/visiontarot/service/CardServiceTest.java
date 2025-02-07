@@ -3,7 +3,7 @@ package com.visiontarot.service;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
-import com.visiontarot.config.GeminiApiRequest;
+import com.visiontarot.config.GeminiApiRequestConfiguration;
 import com.visiontarot.repository.CardRepository;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,14 +23,14 @@ public class CardServiceTest {
     private final String SUMMARY = "할머니의 건강이 회복될 수 있을까요라는 고민에 대한 유니버셜 타로카드의 결과는 Nine of Swords 정방향입니다.";
 
     @Mock
-    private GeminiApiRequest geminiApiRequest;
+    private GeminiApiRequestConfiguration geminiApiRequestConfiguration;
 
     @Autowired
     private CardRepository repository;
 
     @BeforeEach
     public void setUp() {
-        service = new CardService(repository, geminiApiRequest);
+        service = new CardService(repository, geminiApiRequestConfiguration);
     }
 
     @Test
@@ -44,8 +44,8 @@ public class CardServiceTest {
         result.put("Response Code", 200);
         result.put("Response Body", "성공");
 
-        when(geminiApiRequest.makeRequest(SUMMARY)).thenReturn(result);
-        Assertions.assertThat(geminiApiRequest.makeRequest(SUMMARY)).isNotNull();
+        when(geminiApiRequestConfiguration.makeRequest(SUMMARY)).thenReturn(result);
+        Assertions.assertThat(geminiApiRequestConfiguration.makeRequest(SUMMARY)).isNotNull();
         Assertions.assertThat(result.get("Response Code")).isEqualTo(200);
     }
 }
