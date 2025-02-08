@@ -1,6 +1,6 @@
-package com.visiontarot.card.repository;
+package com.visiontarot.repository;
 
-import com.visiontarot.card.model.Card;
+import com.visiontarot.domain.Card;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

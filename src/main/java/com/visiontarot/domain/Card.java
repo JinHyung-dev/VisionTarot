@@ -1,4 +1,4 @@
-package com.visiontarot.card.model;
+package com.visiontarot.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
