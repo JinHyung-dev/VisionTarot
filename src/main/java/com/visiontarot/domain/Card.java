@@ -27,6 +27,11 @@ public class Card {
     private String cardCreateDate;
     private String cardUpdateDate;
 
+    public Card(Long cardId, String cardName) {
+        this.cardId = cardId;
+        this.cardName = cardName;
+    }
+
     public CardDTO toDTO() {
         return new CardDTO(cardId, cardName, cardImgUrl, cardImgName, cardCreateDate, cardUpdateDate);
     }
