@@ -7,18 +7,15 @@ import com.visiontarot.config.FontConfiguration;
 import java.awt.image.BufferedImage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
 public class ConcernCardServiceTest {
     private ConcernCardService concernCardService;
-    @Autowired
     private FontConfiguration fontConfig;
     private final String IMAGE_TEMPLATE_PATH = "static/images/concernCard/background.jpg";
 
     @BeforeEach
     void setUp() {
+        fontConfig = new FontConfiguration();
         concernCardService = new ConcernCardService(fontConfig);
     }
 
