@@ -22,16 +22,19 @@ public class CardService {
     @Autowired
     public CardService(CardRepository cardRepository, GeminiApiRequestConfiguration geminiApiRequestConfiguration) {
         this.cardRepository = cardRepository;
-        this.cardDTOS = getAllCards();
         this.geminiApiRequestConfiguration = geminiApiRequestConfiguration;
     }
 
     public CardDTO drawOneCard() {
+        if (cardDTOS == null || cardDTOS.isEmpty()) { // 카드 정보가 없다면 조회
+            this.cardDTOS = getAllCards();
+        }
+
         log.info(">>> 1카드 뽑기 실행 <<<");
         Random random = new Random();
-        int index = random.nextInt(cardDTOS.size());
-        CardDTO card = cardDTOS.get(index);
-        log.info("결과 : " + card.toString());
+        CardDTO card = cardDTOS.get(random.nextInt(cardDTOS.size()));
+        card.assignRandomDirection();  // 카드 방향 결정
+        log.info("결과 : {}", card);
         return card;
     }
 
