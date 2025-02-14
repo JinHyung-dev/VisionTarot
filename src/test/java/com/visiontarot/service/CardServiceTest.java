@@ -5,7 +5,7 @@ import static org.mockito.Mockito.when;
 
 import com.visiontarot.config.GeminiApiRequestConfiguration;
 import com.visiontarot.domain.Card;
-import com.visiontarot.domain.CardDTO;
+import com.visiontarot.dto.CardDTO;
 import com.visiontarot.repository.CardRepository;
 import java.util.Arrays;
 import java.util.HashMap;

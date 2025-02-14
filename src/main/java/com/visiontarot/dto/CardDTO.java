@@ -1,4 +1,4 @@
-package com.visiontarot.domain;
+package com.visiontarot.dto;
 
 import java.util.Objects;
 import java.util.Random;

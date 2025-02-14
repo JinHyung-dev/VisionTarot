@@ -2,7 +2,8 @@ package com.visiontarot.service;
 
 import com.visiontarot.config.GeminiApiRequestConfiguration;
 import com.visiontarot.domain.Card;
-import com.visiontarot.domain.CardDTO;
+import com.visiontarot.dto.CardDTO;
+import com.visiontarot.dto.CardResponseDTO;
 import com.visiontarot.repository.CardRepository;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,18 @@ public class CardService {
     public CardService(CardRepository cardRepository, GeminiApiRequestConfiguration geminiApiRequestConfiguration) {
         this.cardRepository = cardRepository;
         this.geminiApiRequestConfiguration = geminiApiRequestConfiguration;
+    }
+
+    public CardResponseDTO drawOneCardWithGeminiAnalysis() {
+        //TODO
+        CardDTO card = drawOneCard();
+        String userConcernAndCardResult = "";
+        String imageUrl = "";
+        //= generateCardImage(card, analysis);
+        Map<String, Object> geminiResponse = getGeminiResponse(userConcernAndCardResult);
+        String analysis = "geminiResponse.get()";
+
+        return new CardResponseDTO(card, analysis, imageUrl);
     }
 
     public CardDTO drawOneCard() {

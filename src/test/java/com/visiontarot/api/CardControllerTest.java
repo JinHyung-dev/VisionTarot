@@ -4,12 +4,11 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.visiontarot.domain.CardDTO;
+import com.visiontarot.dto.CardDTO;
 import com.visiontarot.service.CardService;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -39,8 +38,7 @@ public class CardControllerTest {
     }
 
     @Test
-    @DisplayName("1카드 뽑기 테스트")
-    void getOneCardTest() throws Exception {
+    void 카드1개뽑기() throws Exception {
         mockMvc.perform(get("/card/onecard/draw"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isOk())

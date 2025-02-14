@@ -1,5 +1,6 @@
 package com.visiontarot.domain;
 
+import com.visiontarot.dto.CardDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
