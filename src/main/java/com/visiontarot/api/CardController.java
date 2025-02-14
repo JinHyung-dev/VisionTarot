@@ -29,10 +29,6 @@ public class CardController {
         return service.drawOneCard();
     }
 
-    @GetMapping
-    @ResponseBody
-    public
-
     @GetMapping("/threecard")
     public String threecard() {
         return "card";
