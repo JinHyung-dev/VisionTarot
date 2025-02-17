@@ -9,25 +9,45 @@ import java.awt.RenderingHints;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.UUID;
 import javax.imageio.ImageIO;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ConcernCardService {
     private final FontConfiguration fontConfig;
-    private final String IMAGE_TEMPLATE_PATH = "static/images/concernCard/background.jpg";
+    private final S3Service s3Service;
+
+    @Value("${image.concern-card-template}")
+    private String IMAGE_TEMPLATE_PATH;
+
     private static final int TEXT_BOX_X = 80;  // 좌측 상단 X
     private static final int TEXT_BOX_Y = 162; // 좌측 상단 Y
     private static final int TEXT_BOX_WIDTH = 320;  // 영역 너비
     private static final int TEXT_BOX_HEIGHT = 427; // 영역 높이
 
-    @Autowired
-    public ConcernCardService(FontConfiguration fontConfig) {
+    public ConcernCardService(FontConfiguration fontConfig, S3Service s3Service) {
         this.fontConfig = fontConfig;
+        this.s3Service = s3Service;
+    }
+
+    public void uploadImageToS3(BufferedImage image) throws IOException {
+        try {
+            String fileName = UUID.randomUUID() + ".png";
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(image, "png", baos);  // PNG 바이트 배열로 변환
+            byte[] bytes = baos.toByteArray();
+
+            s3Service.uploadConcernImage(fileName, bytes);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public BufferedImage createImage(String text) {
