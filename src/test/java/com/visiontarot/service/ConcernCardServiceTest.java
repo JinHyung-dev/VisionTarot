@@ -7,16 +7,21 @@ import com.visiontarot.config.FontConfiguration;
 import java.awt.image.BufferedImage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 
 public class ConcernCardServiceTest {
     private ConcernCardService concernCardService;
-    private FontConfiguration fontConfig;
     private final String IMAGE_TEMPLATE_PATH = "static/images/concernCard/background.jpg";
+
+    @Mock
+    private FontConfiguration fontConfig;
+
+    @Mock
+    private S3Service s3Service;
 
     @BeforeEach
     void setUp() {
-        fontConfig = new FontConfiguration();
-        concernCardService = new ConcernCardService(fontConfig);
+        concernCardService = new ConcernCardService(fontConfig, s3Service);
     }
 
     @Test
