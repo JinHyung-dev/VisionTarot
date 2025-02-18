@@ -12,5 +12,4 @@ import lombok.NoArgsConstructor;
 public class CardResponseDTO {
     private CardDTO card;
     private String analysis;
-    private String imageUrl;
 }
