@@ -12,6 +12,11 @@ import software.amazon.awssdk.services.s3.S3Client;
 @Configuration
 @Getter
 public class S3Configuration {
+    @Value("${aws.s3.access-key")
+    private String accessKey;
+
+    @Value("${aws.s3.secret-key")
+    private String secretKey;
 
     @Bean
     public S3Client s3Client() {
