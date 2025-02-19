@@ -1,9 +1,11 @@
 package com.visiontarot.service;
 
+import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
@@ -23,14 +25,15 @@ public class S3Service {
     }
 
 
-    public void uploadConcernImage(String fileName, byte[] imageBytes) {
+    public String uploadConcernImage(String fileName, byte[] imageBytes) throws IOException {
         log.info("이미지 크기: {} bytes", imageBytes.length);
-
+        String key = concernCardFolder + fileName + ".png";
         PutObjectRequest request = PutObjectRequest.builder()
                 .bucket(bucketName)
-                .key(concernCardFolder + fileName + ".png")
+                .key(key)
                 .build();
 
         s3Client.putObject(request, RequestBody.fromBytes(imageBytes));
+        return "https://" + bucketName + ".s3." + Region.AP_NORTHEAST_1 + ".amazonaws.com/" + key;
     }
 }
