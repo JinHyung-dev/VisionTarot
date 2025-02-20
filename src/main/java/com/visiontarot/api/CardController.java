@@ -1,6 +1,6 @@
 package com.visiontarot.api;
 
-import com.visiontarot.domain.CardDTO;
+import com.visiontarot.dto.CardDTO;
 import com.visiontarot.service.CardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,10 +28,6 @@ public class CardController {
     public CardDTO drawOneCard() {
         return service.drawOneCard();
     }
-
-    @GetMapping
-    @ResponseBody
-    public
 
     @GetMapping("/threecard")
     public String threecard() {

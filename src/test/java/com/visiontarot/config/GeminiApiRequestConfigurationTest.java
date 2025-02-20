@@ -1,36 +1,61 @@
 package com.visiontarot.config;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.visiontarot.dto.GeminiResponseDTO;
+import java.net.http.HttpResponse;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 public class GeminiApiRequestConfigurationTest {
+    private String mockJsonResponse;
+    private String responseBody;
 
-    @Mock
+    @Spy
     private GeminiApiRequestConfiguration geminiApiClient;
 
+    @Mock
+    private HttpResponse<String> mockResponse;
+
+    @BeforeEach
+    public void init() {
+        MockitoAnnotations.openMocks(this);
+        mockJsonResponse = "{ \"candidates\": [{ \"geminiAnswer\": \"예시 응답입니다.\", \"finishReason\": \"완료\" }] }";
+
+        when(mockResponse.body()).thenReturn(mockJsonResponse);
+    }
+
     @Test
-    void 제미나이_응답() {
-    GeminiApiRequestConfiguration geminiApiClient = mock(GeminiApiRequestConfiguration.class);
+    void 제미나이응답요청_httpResponse리턴() {
+        String summary = "임시 결과";
 
-    String summary = "임시 결과";
-    Map<String, Object> testMap = new HashMap<>();
-    testMap.put("Response Code", 200);
-    testMap.put("Response Body", "성공");
+//        when(geminiApiClient.makeRequest(summary)).thenReturn(mockResponse);
+        doReturn(mockResponse).when(geminiApiClient).makeRequest(summary);
 
-    when(geminiApiClient.makeRequest(summary)).thenReturn(testMap);
+        HttpResponse<String> response = geminiApiClient.makeRequest(summary);
+        responseBody = response.body();
 
-    Map<String, Object> response = geminiApiClient.makeRequest(summary);
+        assertNotNull(response);
+        assertEquals(mockJsonResponse, responseBody);
+    }
 
-    assertThat(response.get("Response Code")).isEqualTo(200);
-    assertThat(response.get("Response Body")).isEqualTo("성공");
+    @Test
+    void 제미나이응답파싱_GeminiResponseDTO리턴() {
+        when(mockResponse.statusCode()).thenReturn(200);
+
+        GeminiResponseDTO result = geminiApiClient.parseGeminiResponse(mockResponse);
+
+        assertNotNull(result);
+        assertEquals("예시 응답입니다.", result.getGeminiAnswer());
+        assertEquals("완료", result.getFinishReason());
     }
 }

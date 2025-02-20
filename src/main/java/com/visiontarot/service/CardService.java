@@ -2,7 +2,8 @@ package com.visiontarot.service;
 
 import com.visiontarot.config.GeminiApiRequestConfiguration;
 import com.visiontarot.domain.Card;
-import com.visiontarot.domain.CardDTO;
+import com.visiontarot.dto.CardDTO;
+import com.visiontarot.dto.CardResponseDTO;
 import com.visiontarot.repository.CardRepository;
 import java.util.List;
 import java.util.Map;
@@ -25,8 +26,22 @@ public class CardService {
         this.geminiApiRequestConfiguration = geminiApiRequestConfiguration;
     }
 
+    public CardResponseDTO drawOneCardWithGeminiAnalysis() {
+        //TODO
+        CardDTO card = drawOneCard();
+        String userConcernAndCardResult = "";
+        String imageUrl = "";
+        //= generateCardImage(card, analysis);
+        Map<String, Object> geminiResponse = getGeminiResponse(userConcernAndCardResult);
+        String analysis = "geminiResponse.get()";
+
+        return new CardResponseDTO(card, analysis, imageUrl);
+    }
+
     public CardDTO drawOneCard() {
+        log.info(">>> 유니버셜 카드덱 데이터 확인 <<<");
         if (cardDTOS == null || cardDTOS.isEmpty()) { // 카드 정보가 없다면 조회
+            log.info("유니버셜 카드덱 데이터가 없으므로 사전 작업을 수행합니다.");
             this.cardDTOS = getAllCards();
         }
 
@@ -42,6 +57,7 @@ public class CardService {
         log.info(">>> 사전 작업 : 유니버셜 카드덱 데이터 불러오기 <<<");
         List<Card> cards = cardRepository.findAll();
         log.info(">>> 사전 작업 완료 <<<");
+        log.info("# 전체 카드덱 : {}", cards);
         return cards.stream()
                 .map(Card::toDTO)  // 엔티티 -> DTO로 변환
                 .collect(Collectors.toList());

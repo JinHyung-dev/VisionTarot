@@ -1,16 +1,18 @@
 package com.visiontarot.config;
 
+import com.visiontarot.dto.GeminiResponseDTO;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class GeminiApiRequestConfiguration {
     // private static final Logger logger = LoggerFactory.getLogger(ImageWriter.class); // ✅ 로거 설정
 
@@ -20,8 +22,12 @@ public class GeminiApiRequestConfiguration {
     @Value("${spring.ai.vertex.ai.gemini.api-key}")
     private String apiKey;
 
-    public Map<String, Object> makeRequest(String summary) {
-        Map<String, Object> result = new HashMap<>();
+    public GeminiResponseDTO getGeminiResponse(String userConcernAndCardResult) {
+        return parseGeminiResponse(makeRequest(userConcernAndCardResult));
+    }
+
+    public HttpResponse<String> makeRequest(String summary) {
+        HttpResponse<String> result = null;
         try {
             // URL 및 API 키 설정
             String url = apiEndpoint + "?key=" + apiKey;
@@ -46,17 +52,23 @@ public class GeminiApiRequestConfiguration {
                     .build();
 
             // 요청 보내고 응답 받기
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-            // 응답 코드 및 응답 내용 출력
-            result.put("Response Code", response.statusCode());
-            result.put("Response Body", response.body());
+            return client.send(request, HttpResponse.BodyHandlers.ofString());
 
         } catch (Exception e) {
-            System.err.println("API 호출 중 오류 발생" + e.getMessage());
-            result.put("Error", "API 호출 중 오류 발생");
+            log.info("API 호출 중 오류 발생{}", e.getMessage());
         }
-
         return result;
+    }
+
+    public GeminiResponseDTO parseGeminiResponse(HttpResponse<String> response) {
+        String responseBody = response.body();
+        JSONObject jsonResponse = new JSONObject(responseBody);
+        JSONObject firstCandidate = jsonResponse.getJSONArray("candidates").getJSONObject(0);
+
+        String geminiAnswer = firstCandidate.getString("geminiAnswer");
+        String finishReason = firstCandidate.getString("finishReason");
+        int statusCode = response.statusCode();
+
+        return new GeminiResponseDTO(geminiAnswer, finishReason, statusCode);
     }
 }
