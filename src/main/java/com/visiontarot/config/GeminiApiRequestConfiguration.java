@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class GeminiApiRequestConfiguration {
-    // private static final Logger logger = LoggerFactory.getLogger(ImageWriter.class); // ✅ 로거 설정
 
     @Value("${spring.ai.vertex.ai.gemini.api-endpoint}")
     private String apiEndpoint;

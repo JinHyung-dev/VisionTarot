@@ -2,11 +2,13 @@ package com.visiontarot.dto;
 
 import java.util.Objects;
 import java.util.Random;
+import lombok.Data;
 import lombok.Getter;
 import lombok.ToString;
 
 @Getter
 @ToString
+@Data
 public class CardDTO {
     private Long id;
     private String cardName;
