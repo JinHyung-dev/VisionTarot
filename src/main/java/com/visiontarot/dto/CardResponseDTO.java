@@ -11,5 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CardResponseDTO {
     private CardDTO card;
-    private String analysis;
+    private String concern;
+    private String geminiAnswer; //GeminiResponseDTO: geminiAnswer
+    private String concernCardImageUrl;
 }

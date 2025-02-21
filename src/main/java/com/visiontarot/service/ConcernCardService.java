@@ -14,11 +14,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
 import javax.imageio.ImageIO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class ConcernCardService {
     private final FontConfiguration fontConfig;
     private final S3Service s3Service;
@@ -36,18 +38,30 @@ public class ConcernCardService {
         this.s3Service = s3Service;
     }
 
-    public void uploadImageToS3(BufferedImage image) throws IOException {
+    public String uploadImageToS3(BufferedImage image) {
+        String fileName = UUID.randomUUID() + ".png";
+        byte[] bytes = null;
         try {
-            String fileName = UUID.randomUUID() + ".png";
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(image, "png", baos);  // PNG 바이트 배열로 변환
-            byte[] bytes = baos.toByteArray();
+            bytes = baos.toByteArray();
 
-            s3Service.uploadConcernImage(fileName, bytes);
+            return s3Service.uploadConcernImage(fileName, bytes);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            log.error("[ERROR] 고민카드 S3 업로드 실패: {}", e.getMessage());
+            log.info("고민카드 S3 업로드를 재시도 합니다.");
+            for (int i = 0; i < 3; i++) {
+                try {
+                    Thread.sleep(1000);
+                    return s3Service.uploadConcernImage(fileName, bytes);
+                } catch (IOException | InterruptedException retryEx) {
+                    log.error("[ERROR]고민카드 S3 재시도 실패: {} ({}번째 시도)", retryEx.getMessage(), i + 1);
+                }
+            }
         }
+        //saveToLocalDatabase(fileName, imageBytes);
+        return null;
     }
 
     public BufferedImage createImage(String text) {
