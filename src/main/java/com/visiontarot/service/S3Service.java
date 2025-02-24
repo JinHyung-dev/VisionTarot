@@ -34,6 +34,6 @@ public class S3Service {
                 .build();
 
         s3Client.putObject(request, RequestBody.fromBytes(imageBytes));
-        return "https://" + bucketName + ".s3." + Region.AP_NORTHEAST_1 + ".amazonaws.com/" + key;
+        return "https://" + bucketName + ".s3." + Region.AP_NORTHEAST_2 + ".amazonaws.com/" + key;
     }
 }

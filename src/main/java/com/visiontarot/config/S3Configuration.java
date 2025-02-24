@@ -21,7 +21,7 @@ public class S3Configuration {
     @Bean
     public S3Client s3Client() {
         return S3Client.builder()
-                .region(Region.AP_NORTHEAST_1)
+                .region(Region.AP_NORTHEAST_2)
                 .credentialsProvider(
                         StaticCredentialsProvider.create(AwsBasicCredentials.create(accessKey, secretKey)))
                 .build();
