@@ -39,12 +39,12 @@ public class ConcernCardService {
     }
 
     public String uploadImageToS3(BufferedImage image) {
-        String fileName = UUID.randomUUID() + ".png";
+        String fileName = UUID.randomUUID() + ".jpg";
         byte[] bytes = null;
         try {
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(image, "png", baos);  // PNG 바이트 배열로 변환
+            ImageIO.write(image, "jpg", baos);
             bytes = baos.toByteArray();
 
             return s3Service.uploadConcernImage(fileName, bytes);
