@@ -30,15 +30,17 @@ public class GeminiApiRequestConfiguration {
         try {
             // URL 및 API 키 설정
             String url = apiEndpoint + "?key=" + apiKey;
+            log.info(">>> 제미나이 응답 요청 발송 url : {}", url);
 
             // JSON 요청 본문
             String jsonInputString = "{"
                     + "\"contents\": [{"
                     + "\"parts\": [{"
-                    + "\"text\": " + summary
+                    + "\"text\": \"" + summary + "\""
                     + "}]"
                     + "}]"
                     + "}";
+            log.info(">>> 제미나이 응답 요청 발송 : {}", jsonInputString);
 
             // HttpClient 객체 생성
             HttpClient client = HttpClient.newHttpClient();
@@ -60,13 +62,19 @@ public class GeminiApiRequestConfiguration {
     }
 
     public GeminiResponseDTO parseGeminiResponse(HttpResponse<String> response) {
+        log.info(">>> 제미나이 응답 파싱 진행");
         String responseBody = response.body();
         JSONObject jsonResponse = new JSONObject(responseBody);
         JSONObject firstCandidate = jsonResponse.getJSONArray("candidates").getJSONObject(0);
 
-        String geminiAnswer = firstCandidate.getString("geminiAnswer");
+        String geminiAnswer = firstCandidate.getJSONObject("content")
+                .getJSONArray("parts")
+                .getJSONObject(0)
+                .getString("text");
         String finishReason = firstCandidate.getString("finishReason");
         int statusCode = response.statusCode();
+        log.info(">>> 제미나이 응답 : {}", geminiAnswer);
+        log.info(">>> 제미나이 status Code : {}", statusCode);
 
         return new GeminiResponseDTO(geminiAnswer, finishReason, statusCode);
     }
