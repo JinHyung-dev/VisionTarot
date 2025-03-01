@@ -4,8 +4,7 @@ import com.visiontarot.dto.CardDTO;
 import com.visiontarot.dto.CardResponseDTO;
 import com.visiontarot.dto.GeminiResponseDTO;
 import com.visiontarot.service.CardService;
-import com.visiontarot.service.ConcernCardService;
-import java.awt.image.BufferedImage;
+import com.visiontarot.service.GeminiService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,12 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Slf4j
 public class CardController {
     private final CardService service;
-    private final ConcernCardService concernCardService;
+    private final GeminiService geminiService;
 
     @Autowired
-    public CardController(CardService service, ConcernCardService concernCardService) {
+    public CardController(CardService service, GeminiService geminiService) {
         this.service = service;
-        this.concernCardService = concernCardService;
+        this.geminiService = geminiService;
     }
 
     @GetMapping("/onecard")
@@ -38,17 +37,13 @@ public class CardController {
         return ResponseEntity.ok(service.drawOneCard());
     }
 
-    @PostMapping("/onecard/draw-with-concerncard")
+    @PostMapping("/onecard/draw-with-analyze")
     public ResponseEntity<CardResponseDTO> drawOneCard(@RequestBody String concern) {
         CardDTO card = service.drawOneCard();
-
-        GeminiResponseDTO geminiResponse = service.getGeminiResponse(concern, card);
+        GeminiResponseDTO geminiResponse = geminiService.getGeminiAnalyze(concern, card);
         String geminiAnswer = geminiResponse.getGeminiAnswer();
 
-        BufferedImage concernCard = concernCardService.createImage(geminiAnswer);
-        String concernCardImgUrl = concernCardService.uploadImageToS3(concernCard);
-
-        return ResponseEntity.ok(new CardResponseDTO(card, concern, geminiAnswer, concernCardImgUrl));
+        return ResponseEntity.ok(new CardResponseDTO(card, concern, geminiAnswer, null));
     }
 
     @GetMapping("/threecard")
