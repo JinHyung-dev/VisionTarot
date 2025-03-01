@@ -32,7 +32,7 @@ public class GeminiService {
                 + "고민: " + concern + "\n"
                 + "뽑기 결과: " + card.getCardName() + "카드가 "
                 + (card.isReversed() ? "역방향" : "정방향")
-                +"으로 나왔어. 한국말로 이 상황에서 이 카드가 무슨 의미일지 해석해줘.";
+                +"으로 나왔어. 한국말로 이 상황에서 이 카드가 무슨 의미일지 해석해줘.(부호나 기호 사용 금지)";
     }
 
     public GeminiResponseDTO getGeminiSummary(String prevAnswer) {
@@ -46,6 +46,7 @@ public class GeminiService {
             return "잘못된 요청입니다. 이전 응답 내용을 다시 확인해주세요.";
         }
         log.info(">>> 고민과 카드뽑기 내용을 요약한 summary 요청문");
-        return "네가 주었던 응답 내용에 대해서 한두문장으로 위로를 해줄 수 있다면 뭐라고 할래? 아무런 기호나 부호없이 순수 한글로만 작성해줘.";
+        return "네가 주었던 응답 내용에 대해서 한두문장으로 위로를 해줄 수 있다면 뭐라고 할래? 아무런 기호나 부호 사용없이 순수 한글로만 작성해줘.\n"
+                + "이전 응답 : " + prevAnswer;
     }
 }
