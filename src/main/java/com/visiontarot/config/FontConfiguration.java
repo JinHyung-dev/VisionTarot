@@ -42,7 +42,7 @@ public class FontConfiguration {
         while (true) {
             int totalHeight = lines.size() * g2d.getFontMetrics().getHeight();
 
-            if (totalHeight <= textboxHeight || fontSize <= 10f) { // 최소 크기까지만 줄임
+            if (totalHeight <= textboxHeight || fontSize <= 16f) { // 최소 크기까지만 줄임
 //            if (totalHeight <= textboxHeight) {
                 break;
             }
