@@ -11,7 +11,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -21,16 +20,14 @@ public class GeminiApiRequestConfigurationTest {
     private String responseBody;
 
     @Spy
-    private GeminiApiRequestConfiguration geminiApiClient;
+    private GeminiApiRequestConfiguration geminiApiClient = new GeminiApiRequestConfiguration();
 
     @Mock
     private HttpResponse<String> mockResponse;
 
     @BeforeEach
     public void init() {
-        MockitoAnnotations.openMocks(this);
-        mockJsonResponse = "{ \"candidates\": [{ \"geminiAnswer\": \"예시 응답입니다.\", \"finishReason\": \"완료\" }] }";
-
+        mockJsonResponse = "{ \"candidates\": [{ \"content\": { \"parts\": [{ \"text\": \"예시 응답입니다.\" }] }, \"finishReason\": \"완료\" }] }";
         when(mockResponse.body()).thenReturn(mockJsonResponse);
     }
 

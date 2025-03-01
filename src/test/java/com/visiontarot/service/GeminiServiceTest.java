@@ -12,12 +12,13 @@ import com.visiontarot.dto.GeminiResponseDTO;
 import java.net.http.HttpResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 public class GeminiServiceTest {
-    @MockBean
     private GeminiService geminiService;
 
     private String mockJsonResponse;
@@ -30,7 +31,8 @@ public class GeminiServiceTest {
 
     @BeforeEach
     public void setUp() {
-        mockJsonResponse = "{ \"candidates\": [{ \"geminiAnswer\": \"예시 응답입니다.\", \"finishReason\": \"완료\" }] }";
+        geminiService = new GeminiService(geminiConfig);
+        mockJsonResponse = "{ \"candidates\": [{ \"content\": { \"parts\": [{ \"text\": \"예시 응답입니다.\" }] }, \"finishReason\": \"완료\" }] }";
     }
 
     @Test
@@ -47,5 +49,20 @@ public class GeminiServiceTest {
         assertNotNull(result);
         assertEquals("예시 응답입니다.", result.getGeminiAnswer());
         assertEquals("완료", result.getFinishReason());
+    }
+
+    @Test
+    public void 제미나이요약조회_GeminiResponseDTO리턴() {
+        String prevAnswer = "이전 응답 예시입니다.";
+        doReturn(mockResponse).when(geminiConfig).makeRequest(anyString());
+        when(mockResponse.body()).thenReturn(mockJsonResponse);
+        when(mockResponse.statusCode()).thenReturn(200);
+
+        GeminiResponseDTO result = geminiService.getGeminiSummary(prevAnswer);
+
+        assertNotNull(result);
+        assertEquals("예시 응답입니다.", result.getGeminiAnswer());
+        assertEquals("완료", result.getFinishReason());
+
     }
 }
