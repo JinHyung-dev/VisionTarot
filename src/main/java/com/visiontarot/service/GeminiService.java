@@ -36,9 +36,9 @@ public class GeminiService {
     }
 
     public GeminiResponseDTO getGeminiSummary(String prevAnswer) {
-        String userConcernAndCardResult = createGeminiRequestSummary(prevAnswer);
-        log.info(">>> 다음 summary에 대해 제미나이 요약을 요청합니다.\n[{}]", userConcernAndCardResult);
-        return geminiApiRequestConfiguration.getGeminiResponse(userConcernAndCardResult);
+        String geminiRequestSummary = createGeminiRequestSummary(prevAnswer);
+        log.info(">>> 다음 summary에 대해 제미나이 요약을 요청합니다.\n[{}]", geminiRequestSummary);
+        return geminiApiRequestConfiguration.getGeminiResponse(geminiRequestSummary);
     }
 
     private String createGeminiRequestSummary(String prevAnswer) {
@@ -46,7 +46,7 @@ public class GeminiService {
             return "잘못된 요청입니다. 이전 응답 내용을 다시 확인해주세요.";
         }
         log.info(">>> 고민과 카드뽑기 내용을 요약한 summary 요청문");
-        return "네가 주었던 응답 내용에 대해서 한두문장으로 위로를 해줄 수 있다면 뭐라고 할래? 아무런 기호나 부호 사용없이 순수 한글로만 작성해줘.\n"
+        return "네가 주었던 응답 내용을 200자로 요약해주고, 그 뒤에 격려나 위로의 한 문장을 덧붙여줘.\n"
                 + "이전 응답 : " + prevAnswer;
     }
 }
