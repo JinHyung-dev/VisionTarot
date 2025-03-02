@@ -1,12 +1,17 @@
 package com.visiontarot.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.visiontarot.service.ConcernCardService;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
 import javax.imageio.ImageIO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -34,6 +39,20 @@ public class ConcernCardServiceIT {
     @Value("${aws.s3.secret-key}")
     private String secretKey;
 
+    @Value("${concerncard.textbox.width}")
+    private int textboxWidth;
+
+    @Test
+    void 고민카드생성_템플릿불러오기_내용작성() {
+        String testText = "테스트";
+
+        BufferedImage resultImage = concernCardService.createImage(testText);
+
+        assertNotNull(resultImage);
+        assertEquals(401, resultImage.getWidth());
+        assertEquals(590, resultImage.getHeight());
+    }
+
     @Test
     public void 고민카드생성_BufferedImage리턴() {
         String sampleGeminiAnswer = "King of Wands 역방향이 나왔다면, 긍정적인 면과 부정적인 면 모두를 고려해야 합니다.";
@@ -43,6 +62,21 @@ public class ConcernCardServiceIT {
         assertNotNull(result);
         assertEquals(401, result.getWidth());
         assertEquals(590, result.getHeight());
+    }
+
+    @Test
+    void 고민카드문장길이조정_String타입List리턴() throws IOException {
+        String sampleGeminiAnswer = "King of Wands 역방향이 나왔다면, 긍정적인 면과 부정적인 면 모두를 고려해야 합니다.";
+        Path imagePath = Paths.get("src/test/resources/test-file.jpg");
+
+        BufferedImage image = ImageIO.read(imagePath.toFile());
+        Graphics2D g2d = image.createGraphics();
+
+        List<String> result = concernCardService.wrapTextToBox(sampleGeminiAnswer, g2d, textboxWidth);
+
+        assertNotNull(result);
+        assertFalse(result.isEmpty());
+        assertEquals(3, result.size());
     }
 
     @Test
