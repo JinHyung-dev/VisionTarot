@@ -29,7 +29,6 @@ footer {
     background-color: #afa0c5;
     color: white;
     padding: 10px;
-    position: fixed;
     bottom: 0;
     width: 100%;
     height: 50px;
@@ -93,7 +92,15 @@ footer {
     margin-top: 30px;
 }
 
-.describeBox {
+.describe-box {
+    display: block;
+    outline: auto;
+    outline-color: #8080802e;
+    padding: 10px;
+    margin: 30px;
+}
+
+.concern-card-box {
     display: block;
     outline: auto;
     outline-color: #8080802e;
