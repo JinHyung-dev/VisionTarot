@@ -39,6 +39,7 @@ public class CardController {
 
     @PostMapping("/onecard/draw-with-analyze")
     public ResponseEntity<CardResponseDTO> drawOneCard(@RequestBody String concern) {
+        log.info("/card/onecard/draw-with-analyze: 요청 수신({})", concern);
         CardDTO card = service.drawOneCard();
         GeminiResponseDTO geminiResponse = geminiService.getGeminiAnalyze(concern, card);
         String geminiAnswer = geminiResponse.getGeminiAnswer();

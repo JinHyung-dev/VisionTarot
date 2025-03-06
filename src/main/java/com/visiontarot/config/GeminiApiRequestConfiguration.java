@@ -62,8 +62,8 @@ public class GeminiApiRequestConfiguration {
     }
 
     public GeminiResponseDTO parseGeminiResponse(HttpResponse<String> response) {
-        log.info(">>> 제미나이 응답 파싱 진행");
         String responseBody = response.body();
+        log.info(">>> 제미나이 응답 파싱 진행 : {}", responseBody);
         JSONObject jsonResponse = new JSONObject(responseBody);
         JSONObject firstCandidate = jsonResponse.getJSONArray("candidates").getJSONObject(0);
 

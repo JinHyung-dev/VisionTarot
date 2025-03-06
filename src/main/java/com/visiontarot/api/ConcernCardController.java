@@ -29,6 +29,7 @@ public class ConcernCardController {
     @PostMapping("/create")
     public ResponseEntity<CardResponseDTO> createConcernCard (
             @RequestBody String prevGeminiAnswer) {
+        log.info(">> /concern-card/create 요청 수신({})", prevGeminiAnswer);
         GeminiResponseDTO geminiResponse = geminiService.getGeminiSummary(prevGeminiAnswer);
         String newSummary = geminiResponse.getGeminiAnswer();
         BufferedImage concernCard = concernCardService.createImage(newSummary);
