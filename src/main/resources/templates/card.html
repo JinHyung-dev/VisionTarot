@@ -12,18 +12,19 @@
 <section class="your-concern" id="concernSection">
     <h3>현재 가장 고민이 되는 점을 적어주세요.</h3>
     <p>구체적일 수록 좋습니다..</p>
-    <form id="userForm">
+    <form id="userForm" class="user-form">
         <label for="userConcern">
-            <textarea id="userConcern" rows="4" cols="50" required placeholder="고민을 입력하세요"></textarea>
+            <textarea id="userConcern" class="concern-textarea" rows="4" cols="50" required placeholder="고민을 입력하세요"></textarea>
         </label>
-        <br>
-        <button type="button" id="submitBtn">카드 뽑기</button>
+        <div class="div-btn">
+            <button type="button" id="submitBtn" class="btn">확인</button>
+        </div>
     </form>
 </section>
 
 <section class="card-shuffling" id="shuffleSection" style="display: none">
     <div id="shufflingMessage">
-        <h3>카드를 섞고 있습니다...</h3>
+        <h2>카드를 섞고 있습니다...</h2>
     </div>
 <!--    <div>카드 섞는 애니메이션</div>-->
 </section>
@@ -37,11 +38,23 @@
 </section>
 
 <section class="card-result" id="resultSection" style="display: none">
-    <h3>당신의 고민에 대한 타로 카드의 응답은...</h3>
+    <h2>당신의 고민에 대한 타로 카드의 응답은...</h2>
     <div id="result"></div>
-    <div id="describe" class="describeBox">
-        <div id="describe-content"></div>
-        <button id="clipboardBtn" class="clipboard-btn">복사하기</button>
+    <div id="describe" class="describe-box">
+        <div id="describe-content" style="text-align: left"></div>
+        <div class="div-btn">
+            <button id="clipboard-btn" class="btn">복사하기</button>
+        </div>
+    </div>
+    <div id="concern-card-box" class="concern-card-box">
+        <div class="div-btn">
+            <button id="check-btn" class="btn">고민카드 확인해보기</button>
+        </div>
+    </div>
+    <div id="page-button-box" class="div-btn">
+        <a th:href="@{/}">
+            <button id="ok-btn" class="btn">처음으로</button>
+        </a>
     </div>
 </section>
 

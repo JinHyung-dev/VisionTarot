@@ -1,18 +1,49 @@
+@font-face {
+    font-family: 'PP Neue Corp Wide';
+    src: url('https://cdn.prod.website-files.com/671752cd4027f01b1b8f1c7f/6717e399d30a606fed425914_PPNeueCorp-WideUltrabold.woff2') format('woff2');
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'NEXON Lv2 Gothic';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON Lv2 Gothic.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
 html, body {
     height: 100%;
     margin: 0;
 }
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'NEXON Lv2 Gothic', Arial, sans-serif;
     background-color: #f8f9fa;
     text-align: center;
     padding-bottom: 60px; /* 푸터의 높이와 동일하게 설정 */
+    height: 100vh;
 }
 
 header {
     background-color: #afa0c5;
     padding: 20px;
     color: white;
+}
+
+.title {
+    pointer-events: auto;
+    text-align: center;
+    text-transform: none;
+    margin-top: 0;
+    margin-bottom: .1em;
+    margin-right: .075em;
+    font-family: PP Neue Corp Wide, sans-serif;
+    font-size: 11vw;
+    font-weight: 800;
+    line-height: 1;
+    position: relative;
 }
 
 nav ul {
@@ -30,32 +61,66 @@ footer {
     color: white;
     padding: 10px;
     bottom: 0;
-    width: 100%;
     height: 50px;
 }
 
 .hero {
     padding: 100px 20px;
-    flex-grow: 1; /* 남은 공간을 차지하게 만듦 */
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    color: white;
+    color: black;
     background-image: url('/images/main.webp');
-    background-size: cover;  /* 배경 이미지가 화면에 맞게 꽉 차도록 설정 */
-    background-position: center;  /* 이미지가 가운데에 위치 */
-    background-repeat: no-repeat; /* 이미지 반복 안 함 */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 80vh;
 }
-.index_btn{
-    flex-grow: 1; /* 남은 공간을 차지하게 만듦 */
+
+.hero-body {
+    background: #ffffffa8;
+    padding: 20px;
+    border-radius: 14px;
+}
+
+.your-concern {
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.card-result {
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.card-shuffling {
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.div-btn{
+    height: 50px;
+    flex-grow: 1;
     display: flex;
     justify-content: center;
     align-content: center;
     gap: 10px;
     margin: 20px 0;
 }
+
+.user-form {
+    margin-top: 10px;
+}
+
 .cards {
     display: flex;
     justify-content: center;
@@ -96,18 +161,77 @@ footer {
     display: block;
     outline: auto;
     outline-color: #8080802e;
-    padding: 10px;
+    padding: 30px;
     margin: 30px;
 }
 
 .concern-card-box {
-    display: block;
-    outline: auto;
-    outline-color: #8080802e;
+    display: flex;
+    flex-direction: column;
     padding: 10px;
     margin: 30px;
+    align-items: center;
 }
 
-.clipboard-btn {
-    margin: 10px;
+.concern-textarea {
+    width: 75%;
+    max-width: 380px;
+    height: 150px;
+    line-height: 150%;
+    resize:vertical;
+    padding: 10px;
+}
+
+.btn {
+    height: 50px;
+    display: inline-block;
+    font-size: 1em;
+    padding: 1em 2em;
+    /*margin-top: 100px;*/
+    margin-bottom: 60px;
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: #a35be8;
+    color: #fff;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    transition: transform ease-in 0.1s, box-shadow ease-in 0.25s;
+}
+
+.btn:focus {
+    outline: 0;
+}
+
+.btn:before, .btn:after {
+    position: absolute;
+    content: "";
+    display: block;
+    width: 140%;
+    height: 100%;
+    left: -20%;
+    z-index: -1000;
+    transition: all ease-in-out 0.5s;
+    background-repeat: no-repeat;
+}
+
+.btn:before {
+    display: none;
+    top: -75%;
+    background-image: radial-gradient(circle, #a35be8 20%, transparent 20%), radial-gradient(circle, transparent 20%, #a35be8 20%, transparent 30%), radial-gradient(circle, #a35be8 20%, transparent 20%), radial-gradient(circle, #a35be8 20%, transparent 20%), radial-gradient(circle, transparent 10%, #a35be8 15%, transparent 20%), radial-gradient(circle, #a35be8 20%, transparent 20%), radial-gradient(circle, #a35be8 20%, transparent 20%), radial-gradient(circle, #a35be8 20%, transparent 20%), radial-gradient(circle, #a35be8 20%, transparent 20%);
+    background-size: 10% 10%, 20% 20%, 15% 15%, 20% 20%, 18% 18%, 10% 10%, 15% 15%, 10% 10%, 18% 18%;
+}
+
+.btn:after {
+    display: none;
+    bottom: -75%;
+    background-image: radial-gradient(circle, #a35be8 20%, transparent 20%), radial-gradient(circle, #a35be8 20%, transparent 20%), radial-gradient(circle, transparent 10%, #a35be8 15%, transparent 20%), radial-gradient(circle, #a35be8 20%, transparent 20%), radial-gradient(circle, #a35be8 20%, transparent 20%), radial-gradient(circle, #a35be8 20%, transparent 20%), radial-gradient(circle, #a35be8 20%, transparent 20%);
+    background-size: 15% 15%, 20% 20%, 18% 18%, 20% 20%, 15% 15%, 10% 10%, 20% 20%;
+}
+
+.btn:active {
+    transform: scale(0.9);
+    background-color: #b773fa;
+    box-shadow: 0 2px 25px rgba(200, 0, 255, 0.2);
 }
