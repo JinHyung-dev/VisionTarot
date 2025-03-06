@@ -1,7 +1,7 @@
 package com.visiontarot.api;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -9,7 +9,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.visiontarot.dto.CardDTO;
 import com.visiontarot.dto.GeminiResponseDTO;
 import com.visiontarot.service.CardService;
+import com.visiontarot.service.ConcernCardService;
 import com.visiontarot.service.GeminiService;
+import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,9 +24,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
-@WebMvcTest(CardController.class)
+@WebMvcTest(ConcernCardController.class)
 @AutoConfigureMockMvc(addFilters = false)
-public class CardControllerTest {
+public class ConcernCardControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
@@ -33,6 +35,9 @@ public class CardControllerTest {
 
     @MockBean
     private GeminiService geminiService;
+
+    @MockBean
+    private ConcernCardService concernCardService;
 
     @BeforeEach
     public void setUp() {
@@ -43,31 +48,23 @@ public class CardControllerTest {
 
         when(cardService.drawOneCard()).thenReturn(mockCards.get(0));
     }
-
     @Test
-    void 카드1개뽑기() throws Exception {
-        mockMvc.perform(get("/card/onecard/draw"))
+    void 고민카드생성_CardResponseDTO전송() throws Exception {
+        String prevGeminiAnswer = "예시 제미나이 분석입니다.";
+        GeminiResponseDTO mockGeminiResponse = new GeminiResponseDTO("예시 요약 내용입니다.", "완료", 200);
+        BufferedImage mockImage = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
+        String mockImageUrl = "https://s3.amazonaws.com/sample-image.png";
+
+        when(geminiService.getGeminiSummary(prevGeminiAnswer)).thenReturn(mockGeminiResponse);
+        when(concernCardService.createImage(any())).thenReturn(mockImage);
+        when(concernCardService.uploadImageToS3(any(BufferedImage.class))).thenReturn(mockImageUrl);
+
+        mockMvc.perform(post("/concerncard/create")
+                        .content(prevGeminiAnswer)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.cardName")
-                        .value("The Fool"));
-    }
-
-    @Test
-    void 카드뽑고제미나이응답_CardResponseDTO전송() throws Exception {
-        CardDTO card = new CardDTO(1L, "The Fool", "url", "imgName", "date", "date");
-        String concern = "예시 고민입니다.";
-        GeminiResponseDTO mockGeminiResponse = new GeminiResponseDTO("예시 응답입니다.", "완료", 200);
-
-        when(cardService.drawOneCard()).thenReturn(card);
-        when(geminiService.getGeminiAnalyze(concern, card)).thenReturn(mockGeminiResponse);
-
-        mockMvc.perform(post("/card/onecard/draw-with-analyze").content(concern)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.card.cardName").value("The Fool"))
-                .andExpect(jsonPath("$.concern").value(concern))
-                .andExpect(jsonPath("$.geminiAnswer").value("예시 응답입니다."));
+                .andExpect(jsonPath("$.geminiAnswer").value("예시 요약 내용입니다."))
+                .andExpect(jsonPath("$.concernCardImageUrl").value(mockImageUrl));
     }
 }

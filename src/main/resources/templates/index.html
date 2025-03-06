@@ -10,17 +10,15 @@
 <div th:replace="fragments/header :: header"></div>
 
 <section class="hero">
-    <h2>오늘의 운명을 타로카드로 확인해보세요!</h2>
-    <p>간단한 카드 뽑기로 당신의 미래를 알아보세요.</p>
-</section>
-
-<section class="index_btn">
-    <a th:href="@{/card/onecard}">
-        <button>1카드 뽑기</button>
-    </a>
-    <a th:href="@{/card/threecard}">
-        <button>3카드 뽑기</button>
-    </a>
+    <div class="hero-body">
+        <h2>오늘의 운명을 타로카드로 확인해보세요!</h2>
+        <p>간단한 카드 뽑기로 당신의 미래를 알아보세요.</p>
+        <div class="div-btn">
+            <a th:href="@{/card/onecard}">
+                <button class="btn">카드 뽑기</button>
+            </a>
+        </div>
+    </div>
 </section>
 
 <div th:replace="fragments/footer :: footer"></div>

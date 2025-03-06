@@ -12,16 +12,16 @@ import software.amazon.awssdk.services.s3.S3Client;
 @Configuration
 @Getter
 public class S3Configuration {
-    @Value("${aws.s3.access-key")
+    @Value("${aws.s3.access-key}")
     private String accessKey;
 
-    @Value("${aws.s3.secret-key")
+    @Value("${aws.s3.secret-key}")
     private String secretKey;
 
     @Bean
     public S3Client s3Client() {
         return S3Client.builder()
-                .region(Region.AP_NORTHEAST_1)
+                .region(Region.AP_NORTHEAST_2)
                 .credentialsProvider(
                         StaticCredentialsProvider.create(AwsBasicCredentials.create(accessKey, secretKey)))
                 .build();

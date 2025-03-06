@@ -4,14 +4,13 @@ import com.visiontarot.config.FontConfiguration;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.RenderingHints;
-import java.awt.font.FontRenderContext;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import javax.imageio.ImageIO;
 import lombok.extern.slf4j.Slf4j;
@@ -28,10 +27,17 @@ public class ConcernCardService {
     @Value("${image.concern-card-template}")
     private String IMAGE_TEMPLATE_PATH;
 
-    private static final int TEXT_BOX_X = 80;  // 좌측 상단 X
-    private static final int TEXT_BOX_Y = 162; // 좌측 상단 Y
-    private static final int TEXT_BOX_WIDTH = 320;  // 영역 너비
-    private static final int TEXT_BOX_HEIGHT = 427; // 영역 높이
+    @Value("${concerncard.textbox.x}")
+    private int textboxX;
+
+    @Value("${concerncard.textbox.y}")
+    private int textboxY;
+
+    @Value("${concerncard.textbox.width}")
+    private int textboxWidth;
+
+    @Value("${concerncard.textbox.height}")
+    private int textboxHeight;
 
     public ConcernCardService(FontConfiguration fontConfig, S3Service s3Service) {
         this.fontConfig = fontConfig;
@@ -39,12 +45,12 @@ public class ConcernCardService {
     }
 
     public String uploadImageToS3(BufferedImage image) {
-        String fileName = UUID.randomUUID() + ".png";
+        String fileName = String.valueOf(UUID.randomUUID());
         byte[] bytes = null;
         try {
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(image, "png", baos);  // PNG 바이트 배열로 변환
+            ImageIO.write(image, "jpg", baos);
             bytes = baos.toByteArray();
 
             return s3Service.uploadConcernImage(fileName, bytes);
@@ -70,6 +76,7 @@ public class ConcernCardService {
         }
 
         try{
+            log.info(">>> 고민카드 이미지 생성을 시작합니다.");
             BufferedImage image = loadTemplateImage();
             image = writeImageWithFont(text, image); // 내용 작성
 
@@ -79,8 +86,9 @@ public class ConcernCardService {
         }
     }
 
-    private BufferedImage loadTemplateImage() throws IOException {
+    public BufferedImage loadTemplateImage() throws IOException {
         try (InputStream inputStream = new ClassPathResource(IMAGE_TEMPLATE_PATH).getInputStream()) {
+            log.info(">>> 고민카드 템플릿 이미지 로딩중...");
             return ImageIO.read(inputStream);
         } catch (IOException e) {
             throw new IOException("고민카드 템플릿 이미지 로드 실패", e);
@@ -88,31 +96,54 @@ public class ConcernCardService {
     }
 
     public BufferedImage writeImageWithFont(String text, BufferedImage image) {
+        log.info(">>> 고민카드 내용 작성을 시작합니다.");
         Graphics2D g2d = image.createGraphics();
         try {
-            // 안티앨리어싱 및 폰트 설정
+            log.info(">>> 안티앨리어싱 및 폰트 설정중..");
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-            Font customFont = fontConfig.getCustomFont(30f);
+            // 텍스트 나누기
+            List<String> lines = wrapTextToBox(text, g2d, textboxWidth);
+
+            Font customFont = fontConfig.getCustomFont(lines, g2d);
             g2d.setFont(customFont);
             g2d.setColor(Color.BLACK);
 
-            Point textPosition = calculateTextPosition(text, customFont, g2d.getFontRenderContext());
-            g2d.drawString(text, textPosition.x, textPosition.y);
+            // 중앙 정렬
+            int totalTextHeight = lines.size() * g2d.getFontMetrics().getHeight();
+            int startY = textboxY + (textboxHeight - totalTextHeight) / 2;
+
+            for (String line : lines) {
+                log.info("{}", line);
+                int textWidth = g2d.getFontMetrics().stringWidth(line);
+                int startX = textboxX + (textboxWidth - textWidth) / 2;
+                g2d.drawString(line, startX, startY);
+                startY += g2d.getFontMetrics().getHeight();
+            }
         } finally {
             g2d.dispose();
         }
         return image;
     }
 
-    private Point calculateTextPosition(String text, Font font, FontRenderContext frc) {
-        Rectangle2D textBounds = font.getStringBounds(text, frc);
-        int textWidth = (int) textBounds.getWidth();
-        int textHeight = (int) textBounds.getHeight();
+    public List<String> wrapTextToBox(String text, Graphics2D g2d, int maxWidth) {
+        List<String> lines = new ArrayList<>();
+        StringBuilder line = new StringBuilder();
 
-        int textX = TEXT_BOX_X + (TEXT_BOX_WIDTH - textWidth) / 2;
-        int textY = TEXT_BOX_Y + (TEXT_BOX_HEIGHT - textHeight) / 2 + textHeight;
+        log.info(">>> 고민카드에 들어갈 내용 문장 길이를 조정하는 중...(최대길이 : {})", maxWidth);
+        for (String word : text.split(" ")) {
+            if (g2d.getFontMetrics().stringWidth(line + word) > maxWidth) {
+                lines.add(line.toString());
+                line = new StringBuilder();
+            }
+            if (!line.isEmpty()) {
+                line.append(" ");
+            }
+            line.append(word);
+        }
+        lines.add(line.toString()); // 마지막 줄 추가
 
-        return new Point(textX, textY);
+        log.info(">>> 조정 결과 : {}, 사이즈 : {}", lines.toString(), lines.size());
+        return lines;
     }
 }

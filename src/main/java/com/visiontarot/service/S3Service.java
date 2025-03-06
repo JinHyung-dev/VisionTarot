@@ -27,13 +27,14 @@ public class S3Service {
 
     public String uploadConcernImage(String fileName, byte[] imageBytes) throws IOException {
         log.info("이미지 크기: {} bytes", imageBytes.length);
-        String key = concernCardFolder + fileName + ".png";
+        String key = concernCardFolder + fileName + ".jpg";
         PutObjectRequest request = PutObjectRequest.builder()
                 .bucket(bucketName)
                 .key(key)
                 .build();
-
         s3Client.putObject(request, RequestBody.fromBytes(imageBytes));
-        return "https://" + bucketName + ".s3." + Region.AP_NORTHEAST_1 + ".amazonaws.com/" + key;
+        String url = "https://" + bucketName + ".s3." + Region.AP_NORTHEAST_2 + ".amazonaws.com/" + key;
+        log.info(">>> 업로드를 시작합니다. url: {}", url);
+        return url;
     }
 }
