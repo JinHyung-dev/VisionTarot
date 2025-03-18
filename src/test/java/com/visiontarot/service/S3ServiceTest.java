@@ -37,7 +37,7 @@ public class S3ServiceTest {
     public void 고민카드업로드_putObject수행_업로드경로리턴() throws IOException {
         byte[] testImageBytes = "testImage".getBytes();
         String fileName = "testFileName";
-        String key = concernCardFolder + fileName + ".png";
+        String key = concernCardFolder + fileName + ".jpg";
 
         s3Service.uploadConcernImage(fileName, testImageBytes);
 
