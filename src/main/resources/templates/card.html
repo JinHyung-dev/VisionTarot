@@ -27,6 +27,7 @@
         <h2>카드를 섞고 있습니다...</h2>
     </div>
 <!--    <div>카드 섞는 애니메이션</div>-->
+    <div th:replace="fragments/footer :: footer"></div>
 </section>
 
 <section class="card-selection" id="selectSection" style="display: none">
@@ -57,8 +58,7 @@
         </a>
     </div>
 </section>
-
-<div th:replace="fragments/footer :: footer"></div>
+<div style="bottom: 0; position: fixed; width: 100%;" th:replace="fragments/footer :: footer"></div>
 
 <script th:src="@{/js/cardScript.js}"></script>
 </body>
