@@ -42,7 +42,7 @@ document.getElementById("submitBtn").addEventListener("click", function() {
     // 일정 시간 후 카드 결과 오픈
     setTimeout(function() {
         document.getElementById("shuffleSection").style.display = 'none';
-        document.body.lastElementChild.remove();
+        document.body.children[5].remove();
         document.getElementById("resultSection").style.display = 'block';
         // 카드 섞기
         // document.getElementById("selectSection").style.display = 'block';

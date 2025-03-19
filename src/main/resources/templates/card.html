@@ -28,7 +28,6 @@
         <h2>카드를 섞고 있습니다...</h2>
     </div>
     <!--    <div>카드 섞는 애니메이션</div>-->
-    <div th:replace="fragments/footer :: footer"></div>
 </section>
 
 <section class="card-selection" id="selectSection" style="display: none">
@@ -58,6 +57,7 @@
             <button id="ok-btn" class="btn">처음으로</button>
         </a>
     </div>
+    <div style="bottom: 0; position: fixed; width: 100%;" th:replace="fragments/footer :: footer"></div>
 </section>
 <div style="bottom: 0; position: fixed; width: 100%;" th:replace="fragments/footer :: footer"></div>
 
