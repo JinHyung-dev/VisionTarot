@@ -52,16 +52,33 @@ document.getElementById("submitBtn").addEventListener("click", function() {
 document.getElementById("clipboard-btn").addEventListener("click", function () {
     const textToCopy = document.getElementById("describe-content").innerText;
 
-    // 클립보드에 텍스트 복사
-    navigator.clipboard
-        .writeText(textToCopy)
-        .then(() => {
-            alert("텍스트가 클립보드에 복사되었습니다!");
-        })
-        .catch((err) => {
-            console.error("복사 실패:", err);
-            alert("복사에 실패했습니다!");
+    if (navigator.clipboard) {
+        // 클립보드에 텍스트 복사
+        navigator.clipboard
+            .writeText(textToCopy)
+            .then(() => {
+                alert("텍스트가 클립보드에 복사되었습니다!");
+            })
+            .catch((err) => {
+                console.error("복사 실패:", err);
+                alert("복사에 실패했습니다!");
+            });
+    } else {
+        const clipboard = new ClipboardJS('#clipboard-btn', {
+            text: function() {
+                return textToCopy;
+            }
         });
+
+        clipboard.on('success', function(e) {
+            alert('텍스트가 클립보드에 복사되었습니다!');
+        });
+
+        clipboard.on('error', function(e) {
+            console.error("복사 실패:", err);
+            alert('복사에 실패했습니다!');
+        });
+    }
 });
 
 document.getElementById("check-btn").addEventListener("click", function() {
