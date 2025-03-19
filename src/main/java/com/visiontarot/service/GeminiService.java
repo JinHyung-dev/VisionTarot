@@ -45,8 +45,17 @@ public class GeminiService {
         if (prevAnswer == null) {
             return "잘못된 요청입니다. 이전 응답 내용을 다시 확인해주세요.";
         }
-        log.info(">>> 고민과 카드뽑기 내용을 요약한 summary 요청문");
+        log.info(">>> 고민과 카드뽑기 내용을 요약한 summary 요청문 생성");
+        prevAnswer = removeSpecialCharacters(prevAnswer);
         return "네가 주었던 응답 내용을 200자로 요약해주고, 그 뒤에 격려나 위로의 한 문장을 덧붙여줘.(문장 간 띄어쓰기는 1번만 허용, 엔터 금지) "
                 + "이전 응답 : " + prevAnswer;
+    }
+
+    private String removeSpecialCharacters(String input) {
+        log.info(">>> 문자, 숫자, 공백 필터중...");
+        if (input == null) {
+            return "";
+        }
+        return input.replaceAll("[^\\w\\s]", "");
     }
 }
