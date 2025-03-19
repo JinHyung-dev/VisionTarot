@@ -8,7 +8,7 @@ document.getElementById("submitBtn").addEventListener("click", function() {
 
     // 고민 입력 폼 숨기고, 카드 섞는 중 메시지 보여주기
     document.getElementById("concernSection").style.display = 'none';
-    document.getElementById("shuffleSection").style.display = 'block';
+    document.getElementById("shuffleSection").style.display = 'flex';
 
     //카드 뽑기
     fetch('/card/onecard/draw-with-analyze', {
@@ -29,6 +29,7 @@ document.getElementById("submitBtn").addEventListener("click", function() {
         const reviewContent = document.getElementById('describe-content');
         if(data.card.reversed) {
             reviewContent.innerText = `${concern}라는 고민에 대한 유니버셜 타로카드의 결과는 ${data.card.cardName} 역방향입니다.`;
+            document.getElementById("card-img").style.transform = "scaleY(-1)";
         } else {
             reviewContent.innerText = `"${concern}"라는 고민에 대한 유니버셜 타로카드의 결과는 ${data.card.cardName} 정방향입니다.`;
         }
@@ -41,6 +42,7 @@ document.getElementById("submitBtn").addEventListener("click", function() {
     // 일정 시간 후 카드 결과 오픈
     setTimeout(function() {
         document.getElementById("shuffleSection").style.display = 'none';
+        document.body.lastElementChild.remove();
         document.getElementById("resultSection").style.display = 'block';
         // 카드 섞기
         // document.getElementById("selectSection").style.display = 'block';

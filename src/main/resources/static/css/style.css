@@ -51,7 +51,6 @@ body {
     font-family: 'NEXON Lv2 Gothic', Arial, sans-serif;
     background-color: #f8f9fa;
     text-align: center;
-    padding-bottom: 60px; /* 푸터의 높이와 동일하게 설정 */
     height: 100vh;
     font-size: var(--font-medium);
     line-height: 1.6;
