@@ -53,13 +53,13 @@ public class ConcernCardControllerTest {
         String prevGeminiAnswer = "예시 제미나이 분석입니다.";
         GeminiResponseDTO mockGeminiResponse = new GeminiResponseDTO("예시 요약 내용입니다.", "완료", 200);
         BufferedImage mockImage = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
-        String mockImageUrl = "https://s3.amazonaws.com/sample-image.png";
+        String mockImageUrl = "https://s3.amazonaws.com/sample-image.jpg";
 
         when(geminiService.getGeminiSummary(prevGeminiAnswer)).thenReturn(mockGeminiResponse);
         when(concernCardService.createImage(any())).thenReturn(mockImage);
         when(concernCardService.uploadImageToS3(any(BufferedImage.class))).thenReturn(mockImageUrl);
 
-        mockMvc.perform(post("/concerncard/create")
+        mockMvc.perform(post("/concern-card/create")
                         .content(prevGeminiAnswer)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print())
